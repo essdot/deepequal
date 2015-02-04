@@ -26,7 +26,7 @@ function deepEqual(a, b) {
   }
 
   if(a instanceof RegExp || b instanceof RegExp) {
-    if(a instanceof Date && b instanceof Date) {
+    if(a instanceof RegExp && b instanceof RegExp) {
       return RegExp.prototype.toString.call(a) ===
         RegExp.prototype.toString.call(b)
     }

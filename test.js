@@ -42,3 +42,11 @@ test('arguments', function(t) {
 
   t.end()
 })
+
+test('regexp', function(t) {
+  t.ok(deepEqual(/abc/, /abc/))
+
+  t.notOk(deepEqual(/abc/, /abcd/))
+
+  t.end()
+})
