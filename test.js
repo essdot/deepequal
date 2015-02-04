@@ -36,8 +36,48 @@ test('objects', function(t) {
   t.ok(deepEqual({a: 1, b: 2}, {a: 1, b: 2}))
   t.ok(deepEqual({a: [], b: [1, 2, 3]}, {a: [], b: [1, 2, 3]}))
 
+  t.ok(deepEqual(
+      {
+          '1': {
+              '2': {
+                  '3': 4
+                , '5': [{}, {'hi': true, 'bye': {}}]
+              }
+          }
+      }
+    , {
+          '1': {
+              '2': {
+                  '3': 4
+                , '5': [{}, {'hi': true, 'bye': {}}]
+              }
+          }
+      }
+    )
+  )
+
   t.notOk(deepEqual({a: NaN}, {b: NaN}))
   t.notOk(deepEqual({a: 1, b: 2}, {a: 1, b: 2, c: 1}))
+
+  t.notOk(deepEqual(
+      {
+          '1': {
+              '2': {
+                  '3': 4
+                , '5': [{}, {'hi': true, 'bye': {}}]
+              }
+          }
+      }
+    , {
+          '1': {
+              '2': {
+                  '3': 4
+                , '5': [{}, {'hi': true, 'bye': []}]
+              }
+          }
+      }
+    )
+  )
 
   t.end()
 })
