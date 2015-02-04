@@ -17,6 +17,12 @@ function deepEqual(a, b) {
     return false
   }
 
+  if(Array.isArray(a) || Array.isArray(b)) {
+    if(!Array.isArray(a) || !Array.isArray(b)) {
+      return false
+    }
+  }
+
   if(a instanceof Date || b instanceof Date) {
     if(a instanceof Date && b instanceof Date) {
       return a.getTime() === b.getTime()
