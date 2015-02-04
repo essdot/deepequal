@@ -26,6 +26,7 @@ test('arrays', function(t) {
   t.notOk(deepEqual([1, 2, 3, 4], [1, 2, 3]))
   t.notOk(deepEqual([''], ['', '']))
   t.notOk(deepEqual([1], [1, 1]))
+  t.notOk(deepEqual([1], {'0': 1}))
 
   t.end()
 })
