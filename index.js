@@ -4,6 +4,7 @@ function deepEqual(a, b) {
   var aKeys
     , bKeys
     , i
+    , key
 
   if(a === b) {
     return true
@@ -52,15 +53,19 @@ function deepEqual(a, b) {
     return deepEqual([].slice.call(a), [].slice.call(b))
   }
 
-  aKeys = Object.keys(a)
-  bKeys = Object.keys(b)
+  aKeys = Object.keys(a).sort()
+  bKeys = Object.keys(b).sort()
 
   if(aKeys.length !== bKeys.length) {
     return false
   }
 
   for(i = 0; i < aKeys.length; i++) {
-    var key = aKeys[i]
+    if(aKeys[i] !== bKeys[i]) {
+      return false
+    }
+
+    key = aKeys[i]
 
     if(!deepEqual(a[key], b[key])) {
       return false
