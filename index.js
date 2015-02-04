@@ -34,6 +34,10 @@ function deepEqual(a, b) {
     return false
   }
 
+  if(isBuffer(a) || isBuffer(b)) {
+    return buffersEqual(a, b)
+  }
+
   if(isArguments(a) || isArguments(b)) {
     if(!isArguments(a) || !isArguments(b)) {
       return false
@@ -68,7 +72,7 @@ function isArguments(o) {
   return Object.prototype.toString.call(o) === '[object Arguments]'
 }
 
-function isBuffer (x) {
+function isBuffer(x) {
   if(!x || typeof x !== 'object' || typeof x.length !== 'number' ||
       typeof x.copy !== 'function' || typeof x.slice !== 'function') {
     return false
