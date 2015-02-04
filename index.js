@@ -4,8 +4,6 @@ function deepEqual(a, b) {
   var aKeys
     , bKeys
     , i
-    , aToCompare
-    , bToCompare
 
   if(a === b) {
     return true
@@ -51,7 +49,7 @@ function deepEqual(a, b) {
     return false
   }
 
-  for(var i = 0; i < aKeys.length; i++) {
+  for(i = 0; i < aKeys.length; i++) {
     var key = aKeys[i]
 
     if(!deepEqual(a[key], b[key])) {
