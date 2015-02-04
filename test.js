@@ -84,6 +84,7 @@ test('buffers', function(t) {
   t.ok(deepEqual(new Buffer('abc'), new Buffer('abc')))
 
   t.notOk(deepEqual(new Buffer('abc'), new Buffer('abcd')))
+  t.notOk(deepEqual(new Buffer('a'), [97]))
   t.notOk(deepEqual(new Buffer('abc'), 'abc'))
   t.notOk(deepEqual(new Buffer('abc'), ['abc']))
   t.notOk(deepEqual(new Buffer('abc'), ['a', 'b', 'c']))
