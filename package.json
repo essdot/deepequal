@@ -1,0 +1,14 @@
+{
+  "name": "essdot-deepequal",
+  "version": "1.0.0",
+  "description": "Deep equality (strict only)",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": "essdot",
+  "license": "ISC",
+  "devDependencies": {
+    "tape": "^3.0.3"
+  }
+}
