@@ -7,6 +7,7 @@ test('primitives', function(t) {
   t.ok(deepEqual(undefined, undefined))
   t.ok(deepEqual(null, null))
   t.ok(deepEqual(true, true))
+  t.ok(deepEqual(NaN, NaN))
 
   t.notOk(deepEqual('5', 5))
   t.notOk(deepEqual('Infinity', Infinity))
@@ -19,10 +20,15 @@ test('arrays', function(t) {
   t.ok(deepEqual([1, 2, 3], [1, 2, 3]))
   t.ok(deepEqual(['a'], ['a']))
   t.ok(deepEqual([NaN], [NaN]))
+  t.ok(deepEqual([Math], [Math]))
+  t.ok(deepEqual([5, NaN, 9], [5, NaN, 9]))
   t.ok(deepEqual([], []))
   t.ok(deepEqual([{}], [{}]))
+  t.ok(deepEqual([[]], [[]]))
+  t.ok(deepEqual([[], []], [[], []]))
   t.ok(deepEqual([{a: 1, b: 2}], [{a: 1, b: 2}]))
 
+  t.notOk(deepEqual([1, 2, 3, undefined], [1, 2, 3]))
   t.notOk(deepEqual([1, 2, 3, 4], [1, 2, 3]))
   t.notOk(deepEqual([''], ['', '']))
   t.notOk(deepEqual([1], [1, 1]))
@@ -112,11 +118,20 @@ test('regexp', function(t) {
 
 test('date', function(t) {
   var d = new Date
+  var dTime = d.getTime()
 
-  t.ok(deepEqual(d, new Date(d.getTime())))
+  t.ok(deepEqual(new Date(1), new Date(1)))
+  t.ok(deepEqual(d, new Date(dTime)))
 
-  t.notOk(deepEqual(d, new Date(d.getTime() + 1)))
-  t.notOk(deepEqual(d, {}))
+  t.notOk(deepEqual(d, new Date(1)))
+  t.notOk(deepEqual(d, new Date(dTime + 1)))
+  t.notOk(deepEqual(d, { getTime: d.getTime.bind(d) }))
+  t.notOk(deepEqual(d, 
+    { 
+      getTime: function() {
+        return dTime
+      }
+  }))
 
   t.end()
 })
@@ -132,4 +147,70 @@ test('buffers', function(t) {
   t.notOk(deepEqual(new Buffer('abc'), {}))
 
   t.end()
+})
+
+
+test('handles deep equality of arrays', function(assert) {
+  var arr1 = [1, 2, 3];
+  var arr2 = [1, 2, 3];
+  var arr3 = [1, 2, 3];
+  var arr4 = [1, 2, 3];
+  arr3[6] = 6;
+
+  assert.ok(deepEqual(arr1, [1, 2, 3]))
+  assert.ok(deepEqual(arr1, arr1))
+  assert.ok(deepEqual(arr1, arr2))
+  assert.ok(deepEqual(arr1.concat([9, 16]), [1, 2, 3, 9, 16]))
+  assert.ok(deepEqual([], []))
+
+  assert.notOk(deepEqual(arr1, [1, 2, 3, 4]))
+  assert.notOk(deepEqual(arr1, [3, 2, 1]))
+
+  assert.notOk(deepEqual(arr3, arr4))
+  arr4[6] = 6;
+  assert.ok(deepEqual(arr3, arr4))
+
+  assert.end()
+})
+
+test('handles deep equality of objects', function(assert) {
+  var obj1 = {
+    boolProp: true,
+    stringProp: 'abc',
+    arrProp: [1, 2, 3],
+    undefProp: undefined,
+    nullProp: null
+  };
+
+  var obj2 = {
+    undefProp: undefined,
+    stringProp: 'abc',
+    arrProp: [1, 2, 3],
+    boolProp: true,
+    nullProp: null
+  }
+
+  var objWithMore = {
+    boolProp: true,
+    boolProp2: true,
+    stringProp: 'abc',
+    arrProp: [1, 2, 3],
+    undefProp: undefined,
+    nullProp: null
+  }
+
+  var objWithLess = {
+    stringProp: 'abc',
+    arrProp: [1, 2, 3],
+    undefProp: undefined,
+    nullProp: null
+  }
+
+  assert.ok(deepEqual(obj1, obj2))
+  assert.ok(deepEqual({}, {}))
+
+  assert.notOk(deepEqual(obj1, objWithLess))
+  assert.notOk(deepEqual(obj1, objWithMore))
+
+  assert.end()
 })
