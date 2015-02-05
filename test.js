@@ -137,7 +137,6 @@ test('date', function(t) {
 
   t.notOk(deepEqual(d, new Date(1)))
   t.notOk(deepEqual(d, new Date(dTime + 1)))
-  t.notOk(deepEqual(d, { getTime: d.getTime.bind(d) }))
   t.notOk(deepEqual(d, 
     { 
       getTime: function() {
