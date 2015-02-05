@@ -37,6 +37,18 @@ test('arrays', function(t) {
   t.end()
 })
 
+test('arrays with holes', function(t) {
+  var arr1 = [1, 2, 3]
+  var arr2 = [1, 2, 3]
+
+  arr1[7] = 5
+  arr2[7] = 5
+
+  t.ok(deepEqual(arr1, arr2))
+
+  t.end()
+})
+
 test('objects', function(t) {
   t.ok(deepEqual({}, {}))
   t.ok(deepEqual({a: NaN}, {a: NaN}))
