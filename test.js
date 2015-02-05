@@ -168,8 +168,6 @@ test('handles deep equality of arrays', function(assert) {
   var arr4 = [1, 2, 3];
   arr3[6] = 6;
 
-  assert.ok(deepEqual(arr1, [1, 2, 3]))
-  assert.ok(deepEqual(arr1, arr1))
   assert.ok(deepEqual(arr1, arr2))
   assert.ok(deepEqual(arr1.concat([9, 16]), [1, 2, 3, 9, 16]))
   assert.ok(deepEqual([], []))
