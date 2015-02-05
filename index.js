@@ -1,3 +1,4 @@
+var util = require('util')
 module.exports = deepEqual
 
 function deepEqual(a, b) {
@@ -18,24 +19,39 @@ function deepEqual(a, b) {
     return false
   }
 
-  if(Array.isArray(a) || Array.isArray(b)) {
-    if(!Array.isArray(a) || !Array.isArray(b)) {
+  if(util.isArray(a) || util.isArray(b)) {
+    if(!util.isArray(a) || !util.isArray(b)) {
       return false
     }
   }
 
-  if(a instanceof Date || b instanceof Date) {
-    if(a instanceof Date && b instanceof Date) {
+  if(isArguments(a) || isArguments(b)) {
+    if(!isArguments(a) || !isArguments(b)) {
+      return false
+    }
+  }
+
+  if(util.isDate(a) || util.isDate(b)) {
+    if(util.isDate(a) && util.isDate(b)) {
       return a.getTime() === b.getTime()
     }
 
     return false
   }
 
-  if(a instanceof RegExp || b instanceof RegExp) {
-    if(a instanceof RegExp && b instanceof RegExp) {
-      return RegExp.prototype.toString.call(a) ===
-        RegExp.prototype.toString.call(b)
+  if(util.isRegExp(a) || util.isRegExp(b)) {
+    if(util.isRegExp(a) && util.isRegExp(b)) {
+          return RegExp.prototype.toString.call(a) ===
+                 RegExp.prototype.toString.call(b)
+    }
+
+    return false
+  }
+
+  if(util.isError(a) || util.isError(b)) {
+    if(util.isError(a) && util.isError(b)) {
+      return a.name === b.name &&
+             a.message === b.message
     }
 
     return false
@@ -43,14 +59,6 @@ function deepEqual(a, b) {
 
   if(isBuffer(a) || isBuffer(b)) {
     return buffersEqual(a, b)
-  }
-
-  if(isArguments(a) || isArguments(b)) {
-    if(!isArguments(a) || !isArguments(b)) {
-      return false
-    }
-
-    return deepEqual([].slice.call(a), [].slice.call(b))
   }
 
   aKeys = Object.keys(a).sort()
