@@ -40,6 +40,8 @@ function deepEqual(a, b) {
     return false
   }
 
+  // If one is an arguments object and the other isn't, not equal.
+  // If both are arguments objects, compare them as arrays.
   if(isArguments(a) || isArguments(b)) {
     if(!isArguments(a) || !isArguments(b)) {
       return false
@@ -50,8 +52,8 @@ function deepEqual(a, b) {
   // If both are RegExps, compare them as patterns.
   if(util.isRegExp(a) || util.isRegExp(b)) {
     if(util.isRegExp(a) && util.isRegExp(b)) {
-          return RegExp.prototype.toString.call(a) ===
-                 RegExp.prototype.toString.call(b)
+      return RegExp.prototype.toString.call(a) ===
+        RegExp.prototype.toString.call(b)
     }
 
     return false
@@ -61,12 +63,12 @@ function deepEqual(a, b) {
     return buffersEqual(a, b)
   }
 
-  // If one is an arguments object and the other isn't, not equal.
-  // If both are arguments objects, compare them as arrays.
+  // If both are Errors, compare name and message.
+  // If one is an Error and the other isn't, not equal.
   if(util.isError(a) || util.isError(b)) {
     if(util.isError(a) && util.isError(b)) {
       return a.name === b.name &&
-             a.message === b.message
+        a.message === b.message
     }
 
     return false
@@ -116,9 +118,9 @@ function isBuffer(x) {
   }
 
   if(typeof x.length !== 'number' ||
-      typeof x.copy !== 'function' ||
-      typeof x.slice !== 'function') {
-        return false
+    typeof x.copy !== 'function' ||
+    typeof x.slice !== 'function') {
+      return false
   }
 
   if(x.length > 0 && typeof x[0] !== 'number') {
